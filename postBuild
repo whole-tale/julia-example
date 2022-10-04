@@ -1,0 +1,6 @@
+# Link missing certificates
+ln -s /etc/ssl/certs/ca-certificates.crt /srv/conda/envs/notebook/share/julia/cert.pem
+
+# Install IJulia
+julia -e "using Pkg; Pkg.add(\"IJulia\"); using IJulia; installkernel(\"Julia\", \"--project=${REPO_DIR}\");"
+julia --project=${REPO_DIR} -e 'using Pkg; Pkg.instantiate(); Pkg.resolve(); pkg"precompile"'
