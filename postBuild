@@ -1,4 +1,4 @@
-JULIA_PATH=/srv/julia
+JULIA_PATH=/srv/conda/julia
 JULIA_HOME=${JULIA_PATH}/bin
 JULIA_BINDIR=${JULIA_HOME}
 JULIA_PKGDIR=${JULIA_PATH}/pkg
@@ -17,5 +17,7 @@ julia -e 'if (VERSION > v"0.7-") using Pkg; else Pkg.init(); end; Pkg.add("IJuli
 mv ${HOME}/.local/share/jupyter/kernels/julia-${JULIA_VERSION%[.-]*} ${NB_PYTHON_PREFIX}/share/jupyter/kernels/julia-${JULIA_VERSION%[.-]*}
                 
 #ln -s /etc/ssl/certs/ca-certificates.crt /srv/conda/envs/notebook/share/julia/cert.pem
-julia -e "using Pkg; Pkg.add(\"IJulia\"); using IJulia; installkernel(\"Julia\", \"--project=${REPO_DIR}\");"
+julia -e 'using IJulia; installkernel("Julia", "--project=${REPO_DIR}");'
 julia --project=${REPO_DIR} -e 'using Pkg; Pkg.instantiate(); Pkg.resolve(); pkg"precompile"'
+
+echo 'PATH="/srv/conda/julia/bin:$PATH"' >> ~/.profile
